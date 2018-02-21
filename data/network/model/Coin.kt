@@ -7,11 +7,11 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "coins")
-data class Coin(
+class Coin(
         @PrimaryKey(autoGenerate = false)
         @Expose
         @SerializedName("Id")
-        val id: String, //3808
+        val id: Int, //3808
 
         @Expose
         @SerializedName("Url")
@@ -51,6 +51,12 @@ data class Coin(
         @Expose
         @SerializedName("SortOrder")
         @ColumnInfo(name = "sort_order")
-        val sortOrder: String //2
+        val sortOrder: Int //2
+) : Comparable<Coin> {
+    override fun compareTo(other: Coin) = comparator.compare(this, other)
 
-)
+    companion object {
+        // using the method reference syntax as an alternative to lambdas
+        val comparator = compareBy(Coin::sortOrder)
+    }
+}

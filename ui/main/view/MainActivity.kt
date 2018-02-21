@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.rx2androidnetworking.Rx2AndroidNetworking
 import com.sandbox.vs.tick.R
 import com.sandbox.vs.tick.data.database.CoinInfo
 import com.sandbox.vs.tick.ui.base.view.BaseActivity
@@ -14,6 +15,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import junit.framework.Test
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 import timber.log.Timber
 import java.util.logging.Logger
 import javax.inject.Inject
@@ -28,6 +30,9 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
     internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     private val loadingView = LoadingView()
+
+    private fun jsonToCoinInfo(it: JSONObject): CoinInfo? =
+            CoinInfo(it.getString(""), it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +77,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
 //    }
 
     override fun displayCoinInfo(coinInfo: CoinInfo) {
-        text.text = coinInfo.toString()
+        text.text = coinInfo.cHANGE24HOUR + " to " + coinInfo.lASTMARKET + "/n"
     }
 
     override fun displayCurrencyItems(currencyArray: Array<CurrencyItem>) {

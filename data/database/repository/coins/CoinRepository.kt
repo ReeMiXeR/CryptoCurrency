@@ -21,5 +21,3 @@ class CoinRepository @Inject internal constructor(private val coinDao: CoinDao) 
 //        return Observable.just(true)
 //    }
 }
-
-

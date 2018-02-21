@@ -22,19 +22,20 @@ class MainInteractor @Inject internal constructor(private val coinsRepoHelper: C
                     .flatMap {
                         if (it.isEmpty())
                             apiHelper.getCoinList(pos, limit)
-                                    .map { coinsRepoHelper.insertCoins(responseToCoin(it)) }
+                                    .map { responseToCoin(it).sortedArray() }
+                                    .map { coinsRepoHelper.insertCoins(it) }
                                     .map { coinToCurrencyItem(it) }
                         else coinsRepoHelper.loadCoins(pos, limit)
                                 .map { coinToCurrencyItem(it) }
                     }
 
-    private fun jsonToCoinInfo(it: JSONObject): CoinInfo? = CoinInfo(it.getString(""), it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""),it.getString(""))
+    private fun jsonToCoinInfo(it: JSONObject): CoinInfo? = CoinInfo(it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""), it.getString(""))
 
     override fun getCoinInfo(text: String): Single<CoinInfo> =
-        apiHelper.getCoinInfo(text)
-                .map { jsonToCoinInfo(it) }
+            apiHelper.getCoinInfo(text)
+                    .map { it.data }
 
-        inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
+    inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
 
     private fun coinToCurrencyItem(it: Array<Coin>): Array<CurrencyItem>? = Array(it.size, { i -> CurrencyItem(it.elementAt(i)) })
 
